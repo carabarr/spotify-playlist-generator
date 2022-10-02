@@ -14,7 +14,17 @@ IFRAME_TEMPLATE = Template("""
  
 @app.route('/')
 def form():
-    return render_template('index.html')
+    text = """
+    <div class="instructions">
+    <p> Please ensure that you are logged out of all Spotify accounts on your computer. When prompted to log in, please use the following to log in:</p>
+    <ul>
+        <li>Email: RecommendationSpotify@gmail.com</li>
+        <li>Password: RecommendationSpotify</li>
+    </ul>
+    </div>
+    """
+    text = Markup(text)
+    return render_template('index.html', description=text)
  
 @app.route('/data/', methods = ['POST', 'GET'])
 def data():
