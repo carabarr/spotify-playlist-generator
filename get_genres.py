@@ -147,8 +147,11 @@ def subject_list(title, author):
     final = parse(genres)
     return final
 
-def genres(title):
+def music_genres(title):
     return genre_correlation(subject_list(title, "n/a"), music_list)
+
+def book_keywords(title):
+    return subject_list(title, "n/a")
 
 if __name__ == "__main__":
     title = input("Enter book title: ")

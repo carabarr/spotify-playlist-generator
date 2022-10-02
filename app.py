@@ -14,7 +14,7 @@ IFRAME_TEMPLATE = Template("""
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/$playlist_id?utm_source=generator" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>""")
 
 def get_playlist(title):
-    return getRecommendation.recommend(title, get_genres.genres(title), 20) 
+    return getRecommendation.recommend(title, get_genres.music_genres(title), get_genres.book_subjects(title), 20) 
 
  
 @app.route('/')

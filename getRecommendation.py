@@ -48,7 +48,7 @@ def from_book_playlist(book_name, book_genres, token):
     return songs
 
 
-def recommend(book_name, genres, nSongs):
+def recommend(book_name, genres, subjects, nSongs):
 
     # Log into spotify
     client_id='445eea96fba74cf285bd484b0309b2f5'
@@ -101,4 +101,13 @@ def recommend(book_name, genres, nSongs):
     # Adds songs to playlist
     # print(urls)
     sp.user_playlist_add_tracks(user_id, playlist["id"], uris)
+
+    URL = "https://api.spotify.com/v1/playlists/{playlist_id}/images".format(playlist['id'])
+    r = requests.put(url = URL, headers = HEADERS)
+    HEADERS = {
+        "Content-Type": "image/jpeg",
+        "Authorization": "Bearer " + TOKEN,
+    }
+
+
     return playlist['id']
