@@ -27,23 +27,41 @@ def from_book_playlist(book_name, book_genres, token):
         "Authorization": "Bearer " + token,
     }
 
+    #Search for user-created playlists related to book keywords
     for genre in book_genres:
-        URL = "https://api.spotify.com/v1/search?q={query}&type=playlist&limit=1".format(query = genre)
+        URL = "https://api.spotify.com/v1/search?q={query}&type=playlist&limit=1&market=US".format(query = genre)
         r = requests.get(url = URL, headers = HEADERS)
         playlists.append(r.json()['playlists']['items'][0]['external_urls']['spotify'].split('/')[-1])
 
-    URL = "https://api.spotify.com/v1/search?q={query}&type=playlist&limit=5".format(query = book_name)
+
+    #Search for user-created playlists named after the book
+    URL = "https://api.spotify.com/v1/search?q={query}&type=playlist&limit=5&market=US".format(query = book_name)
     r = requests.get(url = URL, headers = HEADERS)
     for i in range(5):
         playlists.append(r.json()['playlists']['items'][i]['external_urls']['spotify'].split('/')[-1])
 
 
+    #From each playlist, randomly select a song to add to the master playlist
     for playlist in playlists:
         URL = "https://api.spotify.com/v1/playlists/{id}/tracks".format(id = playlist)
         r = requests.get(url = URL, headers = HEADERS)
         json = r.json()
         if json['items']:
             songs.append(json['items'][random.randint(0, min(100,r.json()['total']) - 1)]['track']['uri'])
+        
+
+    for genre in book_genres:
+
+        song = random.choice(songs)
+        song_id = song.split(":")[-1] #Get ID from URI
+
+        r = requests.get(url = "https://api.spotify.com/v1/tracks/{track}".format(track = song_id), headers = HEADERS)
+        artist = r.json()['album']['artists'][0]['id']
+        
+
+        URL = "https://api.spotify.com/v1/recommendations?seed_artists={artist}&seed_genres={genre}&seed_tracks={track}".format(artist=artist, genre=genre, track=song_id)
+        r = requests.get(url = URL, headers = HEADERS)
+        songs.append(r.json()['tracks'][0]['uri'])
 
     return songs
 
@@ -102,12 +120,12 @@ def recommend(book_name, genres, subjects, nSongs):
     # print(urls)
     sp.user_playlist_add_tracks(user_id, playlist["id"], uris)
 
-    URL = "https://api.spotify.com/v1/playlists/{playlist_id}/images".format(playlist['id'])
-    r = requests.put(url = URL, headers = HEADERS)
-    HEADERS = {
-        "Content-Type": "image/jpeg",
-        "Authorization": "Bearer " + TOKEN,
-    }
+    # URL = "https://api.spotify.com/v1/playlists/{playlist_id}/images".format(playlist['id'])
+    # r = requests.put(url = URL, headers = HEADERS)
+    # HEADERS = {
+    #     "Content-Type": "image/jpeg",
+    #     "Authorization": "Bearer " + TOKEN,
+    # }
 
 
     return playlist['id']
