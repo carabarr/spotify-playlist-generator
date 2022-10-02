@@ -1,11 +1,19 @@
 body {
   background-color: #ededde;
   font-family: "Abhaya Libre";
+  font-size: 18px;
+  color: rgb(150,120,100);
 }
 
 ::-webkit-input-placeholder {
   font-family: "serif";
   color: #d4d4d4;
+}
+
+.instructions {
+  background-color: #e7e7d2;
+  padding: 15px;
+  border-radius: 10px;
 }
 
 .parent-wrapper {
@@ -64,7 +72,7 @@ body {
   text-align: center;
   font-size: 40px;
   font-family: "Playfair Display";
-  /*font-weight: bold;*/
+  font-weight: 100;
   /*letter-spacing: 3px;*/
   /*line-height: 28px;*/
 
