@@ -1,0 +1,5 @@
+Click==7.0
+Flask==2.2.2
+requests==2.22.0
+spacy==3.4.1
+spotipy==2.20.0
